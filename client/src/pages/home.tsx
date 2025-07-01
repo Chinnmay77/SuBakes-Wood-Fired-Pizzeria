@@ -380,6 +380,16 @@ const slides: Slide[] = [
       <nav className="fixed top-0 w-full z-50 bg-[hsl(var(--charcoal-black))]/80 backdrop-blur-md border-b border-white/10">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center h-16 relative">
+            {/* Logo image on the left */}
+            <div className="flex items-center mr-4">
+              <img
+                src="/other images/download.png"
+                alt="SuBakes Logo"
+                className="w-14 h-14 rounded-full object-cover border-4 border-[hsl(var(--fire-orange))] shadow-lg bg-white"
+                style={{ background: "white" }}
+                draggable={false}
+              />
+            </div>
             {/* Hamburger icon (now always visible) */}
             <button
               className="flex items-center px-3 py-2 rounded text-[hsl(var(--fire-orange))] hover:bg-[hsl(var(--fire-orange))]/10 focus:outline-none"
