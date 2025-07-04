@@ -376,91 +376,41 @@ const slides: Slide[] = [
         transition={{ type: "spring", damping: 30, stiffness: 200 }}
       />
 
-     export default function Navbar({ setShowHamburgerMenu }) {
-  return (
-    <nav className="fixed top-0 w-full z-50 bg-[hsl(var(--charcoal-black))]/80 backdrop-blur-md border-b border-white/10 h-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
-        <div className="flex items-center justify-between h-full">
 
-          {/* Hamburger Menu */}
-          <button
-            className="flex items-center px-3 py-2 rounded text-[hsl(var(--fire-orange))] hover:bg-[hsl(var(--fire-orange))]/10 focus:outline-none scale-110 transition-all duration-500"
-            onClick={() => setShowHamburgerMenu(true)}
-            aria-label="Open menu"
-          >
-            <svg className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-            </svg>
-          </button>
-
-          {/* Center Branding */}
-          <div className="flex-1 flex justify-center items-center">
-            <div className="flex items-center space-x-3">
-              
-              {/* Left Icon */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-8 w-8 text-[hsl(var(--fire-orange))] hidden md:block"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 12.79A9 9 0 1111.21 3h.02A9 9 0 0121 12.79z" />
+            {/* Navigation */}
+      <nav className="fixed top-0 w-full z-50 bg-[hsl(var(--charcoal-black))]/80 backdrop-blur-md border-b border-white/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center h-16 relative">
+            {/* Hamburger icon (now always visible) */}
+            <button
+              className="flex items-center px-3 py-2 rounded text-[hsl(var(--fire-orange))] hover:bg-[hsl(var(--fire-orange))]/10 focus:outline-none"
+              onClick={() => setShowHamburgerMenu(true)}
+              aria-label="Open menu"
+            >
+              <svg className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
               </svg>
-
-              {/* Logo */}
-              <img
-                src="/other images/download.png"
-                alt="Subakes Logo"
-                className="h-12 w-auto"
-              />
-
-              {/* Right Icon */}
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-6 w-6 text-[hsl(var(--fire-orange))] hidden md:block"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                strokeWidth="2"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 2a10 10 0 00-2 19.58V22h4v-.42A10 10 0 0012 2z" />
-              </svg>
-
+            </button>
+            {/* Brand name always centered */}
+            <div className="flex-1 flex justify-center items-center">
+              <div className="flex items-center space-x-3">
+                <Pizza className="h-8 w-8 text-[hsl(var(--fire-orange))] md:block hidden" />
+                <span
+                className="font-bold text-[hsl(var(--cream-white))] text-lg sm:text-xl md:text-2xl lg:text-3xl font-serif tracking-tight transition-all brand-title"
+>
+                  Subakes - Wood Fired Pizzaria
+                </span>
+                <Flame className="h-5 w-5 text-[hsl(var(--fire-orange))] md:block hidden" />
+              </div>
+            </div>
+            {/* Desktop/Tablet icons (hidden on mobile) */}
+            <div className="hidden md:flex items-center space-x-4 absolute right-0 top-1/2 -translate-y-1/2">
+              <Pizza className="h-8 w-8 text-[hsl(var(--fire-orange))]" />
+              <Flame className="h-5 w-5 text-[hsl(var(--fire-orange))]" />
             </div>
           </div>
-
-          {/* Right Side Icons */}
-          <div className="hidden md:flex items-center space-x-4 scale-110">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6 text-[hsl(var(--fire-orange))]"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M21 12.79A9 9 0 1111.21 3h.02A9 9 0 0121 12.79z" />
-            </svg>
-
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 text-[hsl(var(--fire-orange))]"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth="2"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 2a10 10 0 00-2 19.58V22h4v-.42A10 10 0 0012 2z" />
-            </svg>
-          </div>
-
         </div>
-      </div>
-    </nav>
-  );
-}
+      </nav>
 
 
 
