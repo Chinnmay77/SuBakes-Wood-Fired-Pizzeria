@@ -407,7 +407,7 @@ const slides: Slide[] = [
                 <span
                 className="font-bold text-[hsl(var(--cream-white))] text-lg sm:text-xl md:text-2xl lg:text-3xl font-serif tracking-tight transition-all brand-title"
 >
-                  Subakes - Wood Fired Pizzaria
+                  Subakes - Wood Fired Pizzaria!
                 </span>
                 <Flame className="h-5 w-5 text-[hsl(var(--fire-orange))] md:block hidden" />
               </div>
