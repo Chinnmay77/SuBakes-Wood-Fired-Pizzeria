@@ -376,50 +376,57 @@ const slides: Slide[] = [
         transition={{ type: "spring", damping: 30, stiffness: 200 }}
       />
 
-      {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-[hsl(var(--charcoal-black))]/80 backdrop-blur-md border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center h-16 relative">
-            {/* Logo image on the left */}
-            <div className="flex items-center mr-4">
-              <img
-                src="/other images/download.png"
-                alt="SuBakes Logo"
-                className="w-14 h-14 rounded-full object-cover border-4 border-[hsl(var(--fire-orange))] shadow-lg bg-white"
-                style={{ background: "white" }}
-                draggable={false}
-              />
-            </div>
-            {/* Hamburger icon (now always visible) */}
-            <button
-              className="flex items-center px-3 py-2 rounded text-[hsl(var(--fire-orange))] hover:bg-[hsl(var(--fire-orange))]/10 focus:outline-none"
-              onClick={() => setShowHamburgerMenu(true)}
-              aria-label="Open menu"
-            >
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-            {/* Brand name always centered */}
-            <div className="flex-1 flex justify-center items-center">
-              <div className="flex items-center space-x-3">
-                <Pizza className="h-8 w-8 text-[hsl(var(--fire-orange))] md:block hidden" />
-                <span
-                className="font-bold text-[hsl(var(--cream-white))] text-lg sm:text-xl md:text-2xl lg:text-3xl font-serif tracking-tight transition-all brand-title"
->
-                  Subakes - Wood Fired Pizzaria!
-                </span>
-                <Flame className="h-5 w-5 text-[hsl(var(--fire-orange))] md:block hidden" />
-              </div>
-            </div>
-            {/* Desktop/Tablet icons (hidden on mobile) */}
-            <div className="hidden md:flex items-center space-x-4 absolute right-0 top-1/2 -translate-y-1/2">
-              <Pizza className="h-8 w-8 text-[hsl(var(--fire-orange))]" />
-              <Flame className="h-5 w-5 text-[hsl(var(--fire-orange))]" />
-            </div>
-          </div>
+      <nav className="fixed top-0 w-full z-50 bg-[hsl(var(--charcoal-black))]/80 backdrop-blur-md border-b border-white/10 h-24 shadow-md">
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-full">
+    <div className="flex items-center justify-between h-full relative">
+
+      {/* Left: Logo */}
+      <div className="flex items-center">
+        <img
+          src="/other images/download.png"
+          alt="SuBakes Logo"
+          className="w-16 h-16 rounded-full object-cover border-4 border-[hsl(var(--fire-orange))] shadow-xl bg-white"
+          draggable={false}
+        />
+      </div>
+
+      {/* Center: Brand */}
+      <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2">
+        <div className="flex items-center space-x-3">
+          <Pizza className="h-8 w-8 text-[hsl(var(--fire-orange))] hidden md:block" />
+          <span className="font-bold text-[hsl(var(--cream-white))] text-xl sm:text-2xl md:text-3xl lg:text-4xl font-serif tracking-tight">
+            Subakes - Wood Fired Pizzaria
+          </span>
+          <Flame className="h-6 w-6 text-[hsl(var(--fire-orange))] hidden md:block" />
         </div>
-      </nav>
+      </div>
+
+      {/* Right: Icons + Hamburger */}
+      <div className="flex items-center space-x-4">
+        {/* Hamburger Button */}
+        <button
+          className="flex items-center px-3 py-2 rounded text-[hsl(var(--fire-orange))] hover:bg-[hsl(var(--fire-orange))]/10 focus:outline-none"
+          onClick={() => setShowHamburgerMenu(true)}
+          aria-label="Open menu"
+        >
+          <svg className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+
+        {/* Icons (Tablet/Desktop Only) */}
+        <div className="hidden md:flex items-center space-x-3">
+          <Pizza className="h-8 w-8 text-[hsl(var(--fire-orange))]" />
+          <Flame className="h-5 w-5 text-[hsl(var(--fire-orange))]" />
+        </div>
+      </div>
+
+    </div>
+  </div>
+</nav>
+
+
+
 
 
 {/* Header Slideshow Section */}
