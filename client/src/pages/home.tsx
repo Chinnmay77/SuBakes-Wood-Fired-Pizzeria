@@ -59,9 +59,21 @@ export function CheeseDrops() {
   // Duration of a single drop's fall (should match transition.duration)
   const DROP_DURATION = 17;
 
-  useEffect(() => {
-    let dropId = 0;
-    const interval = setInterval(() => {
+  // ...inside CheeseDrops component...
+useEffect(() => {
+  let dropId = 0;
+  // Calculate interval: slower on small screens, normal on desktop
+  const getInterval = () => {
+    if (typeof window !== "undefined") {
+      if (window.innerWidth < 500) return 1200; // slowest on very small screens
+      if (window.innerWidth < 768) return 900;  // slower on mobile
+    }
+    return 500; // normal on desktop
+  };
+
+  let intervalId: NodeJS.Timeout;
+  function startInterval() {
+    intervalId = setInterval(() => {
       setDrops((prev) => [
         ...prev,
         {
@@ -73,10 +85,24 @@ export function CheeseDrops() {
           delay: 0
         }
       ]);
-    }, 500); // release a new drop every 0.5s
+    }, getInterval());
+  }
 
-    return () => clearInterval(interval);
-  }, []);
+  startInterval();
+
+  // Listen for resize to update interval dynamically
+  function handleResize() {
+    clearInterval(intervalId);
+    startInterval();
+  }
+  window.addEventListener("resize", handleResize);
+
+  return () => {
+    clearInterval(intervalId);
+    window.removeEventListener("resize", handleResize);
+  };
+}, []);
+// ...rest of CheeseDrops...
 
   // Clean up drops after they finish falling
   useEffect(() => {
@@ -127,6 +153,20 @@ export function CheeseDrops() {
       })}
     </div>
   );
+// Add scroll state for navbar
+const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 40);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[hsl(var(--charcoal-black))] via-[hsl(var(--wood-brown))] to-[hsl(var(--rustic-red))] overflow-hidden"></div>
+  );
 }
 
 export default function Home() {
@@ -149,6 +189,19 @@ export default function Home() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  // ✅ ADD THIS BELOW
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => {
+      setScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
 
   // Add ref for testimonial section
   const testimonialRef = useRef<HTMLDivElement | null>(null);
@@ -376,48 +429,63 @@ const slides: Slide[] = [
         transition={{ type: "spring", damping: 30, stiffness: 200 }}
       />
 
-
-            {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-[hsl(var(--charcoal-black))]/80 backdrop-blur-md border-b border-white/10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center h-16 relative">
-            {/* Hamburger icon (now always visible) */}
-            <button
-              className="flex items-center px-3 py-2 rounded text-[hsl(var(--fire-orange))] hover:bg-[hsl(var(--fire-orange))]/10 focus:outline-none"
-              onClick={() => setShowHamburgerMenu(true)}
-              aria-label="Open menu"
-            >
-              <svg className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-            {/* Brand name always centered */}
-            <div className="flex-1 flex justify-center items-center">
-              <div className="flex items-center space-x-3">
-                <Pizza className="h-8 w-8 text-[hsl(var(--fire-orange))] md:block hidden" />
-                <span
-                className="font-bold text-[hsl(var(--cream-white))] text-lg sm:text-xl md:text-2xl lg:text-3xl font-serif tracking-tight transition-all brand-title"
+      {/* Navigation */}
+      <motion.nav
+  className="fixed top-0 w-full z-50 bg-[hsl(var(--charcoal-black))]/80 backdrop-blur-md border-b border-white/10"
+  style={{ minHeight: "64px", overflow: "hidden" }}
 >
-                  Subakes - Wood Fired Pizzaria
-                </span>
-                <Flame className="h-5 w-5 text-[hsl(var(--fire-orange))] md:block hidden" />
-              </div>
-            </div>
-            {/* Desktop/Tablet icons (hidden on mobile) */}
-            <div className="hidden md:flex items-center space-x-4 absolute right-0 top-1/2 -translate-y-1/2">
-              <Pizza className="h-8 w-8 text-[hsl(var(--fire-orange))]" />
-              <Flame className="h-5 w-5 text-[hsl(var(--fire-orange))]" />
-            </div>
-          </div>
+  <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div
+      className={`
+        flex items-center relative flex-wrap min-h-[64px]
+        justify-between
+      `}
+      style={{ minHeight: "64px" }}
+    >
+      {/* Hamburger icon (always left, vertically centered) */}
+      <button
+        className="flex items-center px-3 py-2 rounded text-[hsl(var(--fire-orange))] hover:bg-[hsl(var(--fire-orange))]/10 focus:outline-none"
+        onClick={() => setShowHamburgerMenu(true)}
+        aria-label="Open menu"
+        style={{ flex: "0 0 auto" }}
+      >
+        <svg className="w-8 h-8" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+      {/* Centered logo + brand text */}
+      <div className="flex flex-col flex-1 items-center min-w-0">
+        <div className="flex items-center min-w-0">
+          <img
+            src="/other images/download.png"
+            alt="Subakes Logo"
+            style={{
+              width: 50,
+              height: 50,
+              objectFit: "contain",
+              borderRadius: 12,
+              boxShadow: "0 2px 12px rgba(0,0,0,0.10)"
+            }}
+            className="flex-shrink-0"
+          />
+          <span
+            className="font-bold text-[hsl(var(--cream-white))] text-base sm:text-lg md:text-xl lg:text-2xl font-serif tracking-tight brand-title ml-3 break-words whitespace-normal min-w-0"
+            style={{ wordBreak: "break-word" }}
+          >
+            Subakes - Wood Fired Pizzaria
+          </span>
         </div>
-      </nav>
+      </div>
+      {/* Desktop/Tablet icons (hidden on mobile) */}
+      <div className="hidden md:flex items-center space-x-4 absolute right-0 top-1/2 -translate-y-1/2">
+        <Pizza className="h-8 w-8 text-[hsl(var(--fire-orange))]" />
+        <Flame className="h-5 w-5 text-[hsl(var(--fire-orange))]" />
+      </div>
+    </div>
+  </div>
+</motion.nav>
 
-
-
-
-
-
-{/* Header Slideshow Section */}
+      {/* Header Slideshow Section */}
 <section className="relative min-h-screen flex items-center justify-center pt-16">
   {/* Animate background image */}
   <AnimatePresence mode="wait">
@@ -1244,46 +1312,50 @@ function ContactForm() {
     }, 1000);
   }
 
-  return (
-    <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-      <input
-        type="text"
-        name="name"
-        required
-        placeholder="Your Name"
-        className="px-4 py-3 rounded-lg border border-[hsl(var(--fire-orange))]/30 focus:outline-none focus:ring-2 focus:ring-[hsl(var(--fire-orange))] bg-white"
-        value={form.name}
-        onChange={handleChange}
-        disabled={loading || submitted}
-      />
-      <input
-        type="email"
-        name="email"
-        required
-        placeholder="Your Email"
-        className="px-4 py-3 rounded-lg border border-[hsl(var(--fire-orange))]/30 focus:outline-none focus:ring-2 focus:ring-[hsl(var(--fire-orange))] bg-white"
-        value={form.email}
-        onChange={handleChange}
-        disabled={loading || submitted}
-      />
-      <textarea
-        name="message"
-        required
-        placeholder="Your Message"
-        rows={5}
-        className="px-4 py-3 rounded-lg border border-[hsl(var(--fire-orange))]/30 focus:outline-none focus:ring-2 focus:ring-[hsl(var(--fire-orange))] bg-white resize-none"
-        value={form.message}
-        onChange={handleChange}
-        disabled={loading || submitted}
-      />
-      <button
-        type="submit"
-        className="bg-[hsl(var(--fire-orange))] hover:bg-[hsl(var(--warm-amber))] text-white font-bold py-3 rounded-lg transition"
-        disabled={loading || submitted}
-      >
-        {loading ? "Sending..." : submitted ? "Thank you for contacting us!" : "Send Message"}
-      </button>
-      {error && <span className="text-red-600 text-sm">{error}</span>}
-    </form>
-  );
+return (
+  <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+    <input
+      type="text"
+      name="name"
+      required
+      placeholder="Your Name"
+      className="px-4 py-3 rounded-lg border border-[hsl(var(--fire-orange))]/30 focus:outline-none focus:ring-2 focus:ring-[hsl(var(--fire-orange))] bg-white"
+      value={form.name}
+      onChange={handleChange}
+      disabled={loading || submitted}
+    />
+    <input
+      type="email"
+      name="email"
+      required
+      placeholder="Your Email"
+      className="px-4 py-3 rounded-lg border border-[hsl(var(--fire-orange))]/30 focus:outline-none focus:ring-2 focus:ring-[hsl(var(--fire-orange))] bg-white"
+      value={form.email}
+      onChange={handleChange}
+      disabled={loading || submitted}
+    />
+    <textarea
+      name="message"
+      required
+      placeholder="Your Message"
+      rows={5}
+      className="px-4 py-3 rounded-lg border border-[hsl(var(--fire-orange))]/30 focus:outline-none focus:ring-2 focus:ring-[hsl(var(--fire-orange))] bg-white resize-none"
+      value={form.message}
+      onChange={handleChange}
+      disabled={loading || submitted}
+    />
+    <button
+      type="submit"
+      className="bg-[hsl(var(--fire-orange))] hover:bg-[hsl(var(--warm-amber))] text-white font-bold py-3 rounded-lg transition"
+      disabled={loading || submitted}
+    >
+      {loading
+        ? "Sending..."
+        : submitted
+        ? "Thank you for contacting us!"
+        : "Send Message"}
+    </button>
+    {error && <span className="text-red-600 text-sm">{error}</span>}
+  </form>
+); // ✅ this is enough
 }
